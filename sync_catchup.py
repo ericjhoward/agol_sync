@@ -200,6 +200,12 @@ def deltas_no_edit_tracking(parent_layer, child_layer, return_features=False, co
     df_parent['JOINER']=df_parent[glob_field_parent]
     
     df_child = child_layer.query(as_df=True, return_geometry=True)
+
+    # Add Check to see if Child is 'GlobalID' if so change it to 'GLOBALID'
+    if glob_field_child == 'GlobalID':
+        df_parent.rename(columns={'GLOBALID':'GlobalID'}, inplace=True)
+        glob_field_parent = 'GlobalID'
+    
     df_child['JOINER']=df_child[glob_field_child]
     
     df_outer = df_parent.merge(df_child,on='JOINER',how='outer',suffixes=('_P','_C'))
